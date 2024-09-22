@@ -1,4 +1,4 @@
-import { env } from 'env'
+import { env } from 'src/env/index'
 import { Pool, PoolClient } from 'pg'
 
 const CONFIG = {
