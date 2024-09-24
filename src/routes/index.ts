@@ -1,8 +1,8 @@
 import { Router } from 'express'
-import admRouter from './admRouter'
+import admRouter from './user-routes/administration-routes/user-routes'
 
-const router = Router()
+const routes = Router()
 
-router.use('/adm', admRouter)
+routes.use('/adm', admRouter)
 
-export default router
+export default routes
