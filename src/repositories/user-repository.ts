@@ -5,7 +5,7 @@ import { database } from 'src/database/database'
 export class UserRepository implements IUserRepository {
   async create({ username, password }: IUser): Promise<IUser | undefined> {
     const queryResult = await database.clientInstance?.query(
-      `INSERT INTO users (username, passord) VALUES ($1, $2) RETURNING *`,
+      `INSERT INTO users (username, password) VALUES ($1, $2) RETURNING *`,
       [username, password],
     )
 

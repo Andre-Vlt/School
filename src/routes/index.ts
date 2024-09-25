@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import admRouter from './user-routes/administration-routes/user-routes'
+import admRouter from './user-routes/administration-routes/adm-routes'
 
 const routes = Router()
 

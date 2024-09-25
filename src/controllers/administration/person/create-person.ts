@@ -2,12 +2,15 @@ import express from 'express'
 import { makeCreatePersonUseCase } from 'src/use-cases/factory/make-create-person-use-case'
 import { z } from 'zod'
 
-export async function create(req: express.Request, res: express.Response) {
+export async function createPerson(
+  req: express.Request,
+  res: express.Response,
+) {
   const registerBodySchema = z.object({
     id_user: z.string(),
     name: z.string(),
     email: z.string().email(),
-    birth: z.date(),
+    birth: z.coerce.date(),
     cpf: z.string().max(11),
   })
 
