@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "test":"",
     "build": "tsup src --out-dir build",
     "start:dev": "tsx watch src/server.ts",
     "start": "node build/server.js"
