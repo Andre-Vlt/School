@@ -4,9 +4,9 @@ services:
     image: postgres:latest
     container_name: db_school
     environment:
-      - POSTGRES_USER=user
-      - POSTGRES_PASSWORD=123456
-      - POSTGRES_DB=school_db
+      - POSTGRES_USER=${DATABASE_USER}
+      - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
+      - POSTGRES_DB={DATABASE_NAME}
     ports:
       - "5243:5432"
     volumes:
@@ -23,6 +23,8 @@ services:
       - "3000:3000"
     networks:
       - app-network
+    environment:
+      - DATABASE_URL=postgres://${DATABASE_USER}:${DATABASE_PASSWORD}@db:5432/${DATABASE_NAME}
 
 networks:
   app-network:
