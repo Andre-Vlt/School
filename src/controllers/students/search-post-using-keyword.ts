@@ -12,9 +12,9 @@ export async function KeywordSearchPost(
 
   const { keyWord } = registerQuerySchema.parse(req.query)
 
-  const searchPostUseCase = makeSearchPostUseCase()
+  const searchPostUseCase = await makeSearchPostUseCase()
 
-  const posts = (await searchPostUseCase).handler(keyWord)
+  const posts = await searchPostUseCase.handler(keyWord)
 
   return res.status(200).send(posts)
 }
