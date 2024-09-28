@@ -1,0 +1,32 @@
+version: '3.8'
+services:
+  db:
+    image: postgres:latest
+    container_name: db_school
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=123456
+      - POSTGRES_DB=school_db
+    ports:
+      - "5243:5432"
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    networks:
+      - app-network
+
+  app:
+    image: school:1
+    container_name: app-container
+    depends_on:
+      - db
+    ports:
+      - "3000:3000"
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  db-data:
