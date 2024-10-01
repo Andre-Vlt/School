@@ -196,11 +196,9 @@ var SearchPostUseCase = class {
 
 // src/use-cases/factory/make-search-post-use-case.ts
 function makeSearchPostUseCase() {
-  return __async(this, null, function* () {
-    const postsRepository = new PostsRepository();
-    const makeSearchPostUseCase2 = new SearchPostUseCase(postsRepository);
-    return makeSearchPostUseCase2;
-  });
+  const postsRepository = new PostsRepository();
+  const makeSearchPostUseCase2 = new SearchPostUseCase(postsRepository);
+  return makeSearchPostUseCase2;
 }
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {

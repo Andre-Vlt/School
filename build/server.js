@@ -1,160 +1,152 @@
-'use strict'
-const __create = Object.create
-const __defProp = Object.defineProperty
-const __getOwnPropDesc = Object.getOwnPropertyDescriptor
-const __getOwnPropNames = Object.getOwnPropertyNames
-const __getProtoOf = Object.getPrototypeOf
-const __hasOwnProp = Object.prototype.hasOwnProperty
-const __copyProps = (to, from, except, desc) => {
-  if ((from && typeof from === 'object') || typeof from === 'function') {
-    for (const key of __getOwnPropNames(from))
+"use strict";
+var __create = Object.create;
+var __defProp = Object.defineProperty;
+var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
+var __getOwnPropNames = Object.getOwnPropertyNames;
+var __getProtoOf = Object.getPrototypeOf;
+var __hasOwnProp = Object.prototype.hasOwnProperty;
+var __copyProps = (to, from, except, desc) => {
+  if (from && typeof from === "object" || typeof from === "function") {
+    for (let key of __getOwnPropNames(from))
       if (!__hasOwnProp.call(to, key) && key !== except)
-        __defProp(to, key, {
-          get: () => from[key],
-          enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable,
-        })
+        __defProp(to, key, { get: () => from[key], enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable });
   }
-  return to
-}
-const __toESM = (mod, isNodeMode, target) => (
-  (target = mod != null ? __create(__getProtoOf(mod)) : {}),
-  __copyProps(
-    // If the importer is in node compatibility mode or this is not an ESM
-    // file that has been converted to a CommonJS file using a Babel-
-    // compatible transform (i.e. "__esModule" has not been set), then set
-    // "default" to the CommonJS "module.exports" for node compatibility.
-    isNodeMode || !mod || !mod.__esModule
-      ? __defProp(target, 'default', { value: mod, enumerable: true })
-      : target,
-    mod,
-  )
-)
-const __async = (__this, __arguments, generator) => {
+  return to;
+};
+var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__getProtoOf(mod)) : {}, __copyProps(
+  // If the importer is in node compatibility mode or this is not an ESM
+  // file that has been converted to a CommonJS file using a Babel-
+  // compatible transform (i.e. "__esModule" has not been set), then set
+  // "default" to the CommonJS "module.exports" for node compatibility.
+  isNodeMode || !mod || !mod.__esModule ? __defProp(target, "default", { value: mod, enumerable: true }) : target,
+  mod
+));
+var __async = (__this, __arguments, generator) => {
   return new Promise((resolve, reject) => {
-    const fulfilled = (value) => {
+    var fulfilled = (value) => {
       try {
-        step(generator.next(value))
+        step(generator.next(value));
       } catch (e) {
-        reject(e)
+        reject(e);
       }
-    }
-    const rejected = (value) => {
+    };
+    var rejected = (value) => {
       try {
-        step(generator.throw(value))
+        step(generator.throw(value));
       } catch (e) {
-        reject(e)
+        reject(e);
       }
-    }
-    var step = (x) =>
-      x.done
-        ? resolve(x.value)
-        : Promise.resolve(x.value).then(fulfilled, rejected)
-    step((generator = generator.apply(__this, __arguments)).next())
-  })
-}
+    };
+    var step = (x) => x.done ? resolve(x.value) : Promise.resolve(x.value).then(fulfilled, rejected);
+    step((generator = generator.apply(__this, __arguments)).next());
+  });
+};
 
 // src/app.ts
-const import_express5 = __toESM(require('express'))
+var import_express5 = __toESM(require("express"));
 
 // src/routes/index.ts
-const import_express4 = require('express')
+var import_express4 = require("express");
 
 // src/routes/administration-routes/adm-routes.ts
-const import_express = require('express')
+var import_express = require("express");
 
 // src/env/index.ts
-const import_config = require('dotenv/config')
-const import_zod = require('zod')
-const envSchema = import_zod.z.object({
+var import_config = require("dotenv/config");
+var import_zod = require("zod");
+var envSchema = import_zod.z.object({
   PORT: import_zod.z.coerce.number().default(3e3),
   DATABASE_USER: import_zod.z.string(),
   DATABASE_NAME: import_zod.z.string(),
   DATABASE_PASSWORD: import_zod.z.string(),
   DATABASE_HOST: import_zod.z.string(),
-  DATABASE_PORT: import_zod.z.coerce.number(),
-})
-const _env = envSchema.safeParse(process.env)
+  DATABASE_PORT: import_zod.z.coerce.number()
+});
+var _env = envSchema.safeParse(process.env);
 if (!_env.success) {
   console.error(
     `There's something wrong with the environment variables`,
-    _env.error.format(),
-  )
-  throw new Error(`There's something wrong with the environment variables`)
+    _env.error.format()
+  );
+  throw new Error(`There's something wrong with the environment variables`);
 }
-const env = _env.data
+var env = _env.data;
 
 // src/database/database.ts
-const import_pg = require('pg')
-const CONFIG = {
+var import_pg = require("pg");
+var CONFIG = {
   user: env.DATABASE_USER,
   host: env.DATABASE_HOST,
   database: env.DATABASE_NAME,
   password: env.DATABASE_PASSWORD,
-  port: env.DATABASE_PORT,
-}
-const Database = class {
+  port: env.DATABASE_PORT
+};
+var Database = class {
   constructor() {
-    this.pool = new import_pg.Pool(CONFIG)
-    this.connection()
+    this.pool = new import_pg.Pool(CONFIG);
+    this.connection();
   }
-
   connection() {
     return __async(this, null, function* () {
       try {
-        this.client = yield this.pool.connect()
+        this.client = yield this.pool.connect();
       } catch (error) {
-        console.error(`Database connection error: ${error}`)
-        throw new Error(`Database connection error: ${error}`)
+        console.error(`Database connection error: ${error}`);
+        throw new Error(`Database connection error: ${error}`);
       }
-    })
+    });
   }
-
   get clientInstance() {
-    return this.client
+    return this.client;
   }
-}
-const database = new Database()
+};
+var database = new Database();
 
 // src/repositories/person-repository.ts
-const PersonRepository = class {
+var PersonRepository = class {
   create(_0) {
-    return __async(
-      this,
-      arguments,
-      function* ({ id_user, name, email, birth, cpf }) {
-        let _a
-        const query = `INSERT INTO person (id_user, name, email, birth, cpf) VALUES ($1, $2, $3, $4, $5) RETURNING *`
-        const result = yield (_a = database.clientInstance) == null
-          ? void 0
-          : _a.query(query, [id_user, name, email, birth, cpf])
-        return result == null ? void 0 : result.rows[0]
-      },
-    )
+    return __async(this, arguments, function* ({
+      id_user,
+      name,
+      email,
+      birth,
+      cpf
+    }) {
+      var _a;
+      const query = `INSERT INTO person (id_user, name, email, birth, cpf) VALUES ($1, $2, $3, $4, $5) RETURNING *`;
+      const result = yield (_a = database.clientInstance) == null ? void 0 : _a.query(query, [
+        id_user,
+        name,
+        email,
+        birth,
+        cpf
+      ]);
+      return result == null ? void 0 : result.rows[0];
+    });
   }
-}
+};
 
 // src/use-cases/create-person-use-case.ts
-const CreatePersonUseCase = class {
+var CreatePersonUseCase = class {
   constructor(personRepository) {
-    this.personRepository = personRepository
+    this.personRepository = personRepository;
   }
-
   handler(person) {
     return __async(this, null, function* () {
-      return this.personRepository.create(person)
-    })
+      return this.personRepository.create(person);
+    });
   }
-}
+};
 
 // src/use-cases/factory/make-create-person-use-case.ts
 function makeCreatePersonUseCase() {
-  const personRepository = new PersonRepository()
-  const createPersonUseCase = new CreatePersonUseCase(personRepository)
-  return createPersonUseCase
+  const personRepository = new PersonRepository();
+  const createPersonUseCase = new CreatePersonUseCase(personRepository);
+  return createPersonUseCase;
 }
 
 // src/controllers/administration/person/create-person.ts
-const import_zod2 = require('zod')
+var import_zod2 = require("zod");
 function createPerson(req, res) {
   return __async(this, null, function* () {
     const registerBodySchema = import_zod2.z.object({
@@ -162,112 +154,112 @@ function createPerson(req, res) {
       name: import_zod2.z.string(),
       email: import_zod2.z.string().email(),
       birth: import_zod2.z.coerce.date(),
-      cpf: import_zod2.z.string().max(11),
-    })
+      cpf: import_zod2.z.string().max(11)
+    });
     const { id_user, name, email, birth, cpf } = registerBodySchema.parse(
-      req.body,
-    )
-    const createPersonUseCase = makeCreatePersonUseCase()
+      req.body
+    );
+    const createPersonUseCase = makeCreatePersonUseCase();
     const person = yield createPersonUseCase.handler({
       id_user,
       name,
       email,
       birth,
-      cpf,
-    })
-    return res.status(201).send(person)
-  })
+      cpf
+    });
+    return res.status(201).send(person);
+  });
 }
 
 // src/repositories/student-repository.ts
-const StudentRepository = class {
+var StudentRepository = class {
   create(_0) {
     return __async(this, arguments, function* ({ id_person, grade }) {
-      let _a
-      const query = `INSERT INTO students (id_person, grade) VALUES ($1, $2) RETURNING *`
-      const queryResult = yield (_a = database.clientInstance) == null
-        ? void 0
-        : _a.query(query, [id_person, grade])
-      return queryResult == null ? void 0 : queryResult.rows[0]
-    })
+      var _a;
+      const query = `INSERT INTO students (id_person, grade) VALUES ($1, $2) RETURNING *`;
+      const queryResult = yield (_a = database.clientInstance) == null ? void 0 : _a.query(query, [
+        id_person,
+        grade
+      ]);
+      return queryResult == null ? void 0 : queryResult.rows[0];
+    });
   }
-}
+};
 
 // src/use-cases/create-student-use-case.ts
-const CreateStudentUseCase = class {
+var CreateStudentUseCase = class {
   constructor(studentRepository) {
-    this.studentRepository = studentRepository
+    this.studentRepository = studentRepository;
   }
-
   handler(student) {
     return __async(this, null, function* () {
-      return this.studentRepository.create(student)
-    })
+      return this.studentRepository.create(student);
+    });
   }
-}
+};
 
 // src/use-cases/factory/make-create-student-use-case.ts
 function makeCreateStudentUseCase() {
-  const studentRepository = new StudentRepository()
-  const createStudentUseCase = new CreateStudentUseCase(studentRepository)
-  return createStudentUseCase
+  const studentRepository = new StudentRepository();
+  const createStudentUseCase = new CreateStudentUseCase(studentRepository);
+  return createStudentUseCase;
 }
 
 // src/controllers/administration/student/create-student.ts
-const import_zod3 = require('zod')
+var import_zod3 = require("zod");
 function createStudent(req, res) {
   return __async(this, null, function* () {
     const registerBodySchema = import_zod3.z.object({
       id_person: import_zod3.z.string(),
-      grade: import_zod3.z.string().default('0'),
-    })
-    const { id_person, grade } = registerBodySchema.parse(req.body)
-    const createStudentUseCase = makeCreateStudentUseCase()
+      grade: import_zod3.z.string().default("0")
+    });
+    const { id_person, grade } = registerBodySchema.parse(req.body);
+    const createStudentUseCase = makeCreateStudentUseCase();
     const student = yield createStudentUseCase.handler({
       id_person,
-      grade,
-    })
-    return res.status(201).send(student)
-  })
+      grade
+    });
+    return res.status(201).send(student);
+  });
 }
 
 // src/controllers/administration/teacher/create-teacher.ts
-const import_zod4 = require('zod')
+var import_zod4 = require("zod");
 
 // src/use-cases/create-teacher-use-case.ts
-const CreateTeacherUseCase = class {
+var CreateTeacherUseCase = class {
   constructor(teacherRepository) {
-    this.teacherRepository = teacherRepository
+    this.teacherRepository = teacherRepository;
   }
-
   handler(teacher) {
     return __async(this, null, function* () {
-      return this.teacherRepository.create(teacher)
-    })
+      return this.teacherRepository.create(teacher);
+    });
   }
-}
+};
 
 // src/repositories/teacher-repository.ts
-const TeacherRepository = class {
+var TeacherRepository = class {
   create(_0) {
-    return __async(this, arguments, function* ({ id_person, id_subject }) {
-      let _a
-      const queryResult = yield (_a = database.clientInstance) == null
-        ? void 0
-        : _a.query(
-            `INSERT INTO teachers (id_person, id_subject) VALUES ($1, $2) RETURNING *`,
-            [id_person, id_subject],
-          )
-      return queryResult == null ? void 0 : queryResult.rows[0]
-    })
+    return __async(this, arguments, function* ({
+      id_person,
+      id_subject
+    }) {
+      var _a;
+      const queryResult = yield (_a = database.clientInstance) == null ? void 0 : _a.query(
+        `INSERT INTO teachers (id_person, id_subject) VALUES ($1, $2) RETURNING *`,
+        [id_person, id_subject]
+      );
+      return queryResult == null ? void 0 : queryResult.rows[0];
+    });
   }
-}
+};
 
 // src/use-cases/factory/make-create-teacher-use-case.ts
 function makeCreateTeacherUseCase() {
-  const teacherRepository = new TeacherRepository()
-  const createTeacherUseCase = new CreateTeacherUseCase(teacherRepository)
-  return createTeacherUseCase
+  const teacherRepository = new TeacherRepository();
+  const createTeacherUseCase = new CreateTeacherUseCase(teacherRepository);
+  return createTeacherUseCase;
 }
 
 // src/controllers/administration/teacher/create-teacher.ts
@@ -275,202 +267,188 @@ function createTeacher(req, res) {
   return __async(this, null, function* () {
     const registerBodySchema = import_zod4.z.object({
       id_person: import_zod4.z.string(),
-      id_subject: import_zod4.z.coerce.number(),
-    })
-    const { id_person, id_subject } = registerBodySchema.parse(req.body)
-    const createTeacherUseCase = makeCreateTeacherUseCase()
+      id_subject: import_zod4.z.coerce.number()
+    });
+    const { id_person, id_subject } = registerBodySchema.parse(req.body);
+    const createTeacherUseCase = makeCreateTeacherUseCase();
     const teacher = yield createTeacherUseCase.handler({
       id_person,
-      id_subject,
-    })
-    return res.status(201).send(teacher)
-  })
+      id_subject
+    });
+    return res.status(201).send(teacher);
+  });
 }
 
 // src/repositories/user-repository.ts
-const UserRepository = class {
+var UserRepository = class {
   create(_0) {
     return __async(this, arguments, function* ({ username, password }) {
-      let _a
-      const queryResult = yield (_a = database.clientInstance) == null
-        ? void 0
-        : _a.query(
-            `INSERT INTO users (username, password) VALUES ($1, $2) RETURNING *`,
-            [username, password],
-          )
-      return queryResult == null ? void 0 : queryResult.rows[0]
-    })
+      var _a;
+      const queryResult = yield (_a = database.clientInstance) == null ? void 0 : _a.query(
+        `INSERT INTO users (username, password) VALUES ($1, $2) RETURNING *`,
+        [username, password]
+      );
+      return queryResult == null ? void 0 : queryResult.rows[0];
+    });
   }
-}
+};
 
 // src/use-cases/create-user-use-case.ts
-const CreateUserUseCase = class {
+var CreateUserUseCase = class {
   constructor(userRepository) {
-    this.userRepository = userRepository
+    this.userRepository = userRepository;
   }
-
   handler(user) {
     return __async(this, null, function* () {
-      return this.userRepository.create(user)
-    })
+      return this.userRepository.create(user);
+    });
   }
-}
+};
 
 // src/use-cases/factory/make-create-user-use-case.ts
 function makeCreateUserUseCase() {
-  const userRepository = new UserRepository()
-  const createUserUseCase = new CreateUserUseCase(userRepository)
-  return createUserUseCase
+  const userRepository = new UserRepository();
+  const createUserUseCase = new CreateUserUseCase(userRepository);
+  return createUserUseCase;
 }
 
 // src/controllers/administration/user/create-user.ts
-const import_zod5 = require('zod')
+var import_zod5 = require("zod");
 function createUser(req, res) {
   return __async(this, null, function* () {
     const registerBodySchema = import_zod5.z.object({
       username: import_zod5.z.string(),
-      password: import_zod5.z.string(),
-    })
-    const { username, password } = registerBodySchema.parse(req.body)
-    const createUserUseCase = makeCreateUserUseCase()
+      password: import_zod5.z.string()
+    });
+    const { username, password } = registerBodySchema.parse(req.body);
+    const createUserUseCase = makeCreateUserUseCase();
     const user = yield createUserUseCase.handler({
       username,
-      password,
-    })
-    return res.status(201).send(user)
-  })
+      password
+    });
+    return res.status(201).send(user);
+  });
 }
 
 // src/routes/administration-routes/adm-routes.ts
-const admRouter = (0, import_express.Router)()
-admRouter.post('/user', createUser)
-admRouter.post('/person', createPerson)
-admRouter.post('/teacher', createTeacher)
-admRouter.post('/student', createStudent)
-const adm_routes_default = admRouter
+var admRouter = (0, import_express.Router)();
+admRouter.post("/user", createUser);
+admRouter.post("/person", createPerson);
+admRouter.post("/teacher", createTeacher);
+admRouter.post("/student", createStudent);
+var adm_routes_default = admRouter;
 
 // src/routes/teacher-routes/teacher-routes.ts
-const import_express2 = require('express')
+var import_express2 = require("express");
 
 // src/repositories/posts-repository.ts
-const PostsRepository = class {
+var PostsRepository = class {
   findAllPosts(page, limit) {
     return __async(this, null, function* () {
-      let _a
-      const offset = (page - 1) * limit
-      const queryResult = yield (_a = database.clientInstance) == null
-        ? void 0
-        : _a.query(`SELECT * FROM posts LIMIT $1 OFFSET $2`, [limit, offset])
-      return queryResult == null ? void 0 : queryResult.rows
-    })
+      var _a;
+      const offset = (page - 1) * limit;
+      const queryResult = yield (_a = database.clientInstance) == null ? void 0 : _a.query(
+        `SELECT * FROM posts LIMIT $1 OFFSET $2`,
+        [limit, offset]
+      );
+      return queryResult == null ? void 0 : queryResult.rows;
+    });
   }
-
   findPostById(id_post) {
     return __async(this, null, function* () {
-      let _a
-      const queryResult = yield (_a = database.clientInstance) == null
-        ? void 0
-        : _a.query(`SELECT * FROM posts WHERE id_post = $1`, [id_post])
-      return queryResult == null ? void 0 : queryResult.rows[0]
-    })
+      var _a;
+      const queryResult = yield (_a = database.clientInstance) == null ? void 0 : _a.query(
+        `SELECT * FROM posts WHERE id_post = $1`,
+        [id_post]
+      );
+      return queryResult == null ? void 0 : queryResult.rows[0];
+    });
   }
-
   createPost(_0) {
-    return __async(
-      this,
-      arguments,
-      function* ({ id_teacher, id_subject, post_text, post_title, post_date }) {
-        let _a
-        const query = `INSERT INTO posts (id_teacher, id_subject, post_text, post_title, post_date) VALUES ($1, $2, $3, $4, $5) RETURNING *`
-        const queryResult = yield (_a = database.clientInstance) == null
-          ? void 0
-          : _a.query(query, [
-              id_teacher,
-              id_subject,
-              post_text,
-              post_title,
-              post_date,
-            ])
-        return queryResult == null ? void 0 : queryResult.rows[0]
-      },
-    )
+    return __async(this, arguments, function* ({
+      id_teacher,
+      id_subject,
+      post_text,
+      post_title,
+      post_date
+    }) {
+      var _a;
+      const query = `INSERT INTO posts (id_teacher, id_subject, post_text, post_title, post_date) VALUES ($1, $2, $3, $4, $5) RETURNING *`;
+      const queryResult = yield (_a = database.clientInstance) == null ? void 0 : _a.query(query, [
+        id_teacher,
+        id_subject,
+        post_text,
+        post_title,
+        post_date
+      ]);
+      return queryResult == null ? void 0 : queryResult.rows[0];
+    });
   }
-
   updatePost(_0) {
-    return __async(
-      this,
-      arguments,
-      function* ({
-        id_post,
+    return __async(this, arguments, function* ({
+      id_post,
+      id_teacher,
+      id_subject,
+      post_text,
+      post_title,
+      post_date
+    }) {
+      var _a;
+      const query = `UPDATE posts SET id_teacher = $1, id_subject = $2, post_text = $3, post_title = $4, post_date = $5 WHERE id_post = $6 RETURNING *`;
+      const queryResult = yield (_a = database.clientInstance) == null ? void 0 : _a.query(query, [
         id_teacher,
         id_subject,
         post_text,
         post_title,
         post_date,
-      }) {
-        let _a
-        const query = `UPDATE posts SET id_teacher = $1, id_subject = $2, post_text = $3, post_title = $4, post_date = $5 WHERE id_post = $6 RETURNING *`
-        const queryResult = yield (_a = database.clientInstance) == null
-          ? void 0
-          : _a.query(query, [
-              id_teacher,
-              id_subject,
-              post_text,
-              post_title,
-              post_date,
-              id_post,
-            ])
-        return queryResult == null ? void 0 : queryResult.rows[0]
-      },
-    )
+        id_post
+      ]);
+      return queryResult == null ? void 0 : queryResult.rows[0];
+    });
   }
-
   deletePost(id_post) {
     return __async(this, null, function* () {
-      let _a
-      yield (_a = database.clientInstance) == null
-        ? void 0
-        : _a.query(`DELETE FROM posts WHERE id_post = $1`, [id_post])
-      return { Success: 'Post deleted' }
-    })
+      var _a;
+      yield (_a = database.clientInstance) == null ? void 0 : _a.query(
+        `DELETE FROM posts WHERE id_post = $1`,
+        [id_post]
+      );
+      return { Success: "Post deleted" };
+    });
   }
-
   keyWordSearch(keyWord) {
     return __async(this, null, function* () {
-      let _a
-      const queryResult = yield (_a = database.clientInstance) == null
-        ? void 0
-        : _a.query(
-            `SELECT * FROM posts WHERE post_text ILIKE $1 OR post_title ILIKE $1`,
-            [`%${keyWord}%`],
-          )
-      return queryResult == null ? void 0 : queryResult.rows
-    })
+      var _a;
+      const queryResult = yield (_a = database.clientInstance) == null ? void 0 : _a.query(
+        `SELECT * FROM posts WHERE post_text ILIKE $1 OR post_title ILIKE $1`,
+        [`%${keyWord}%`]
+      );
+      return queryResult == null ? void 0 : queryResult.rows;
+    });
   }
-}
+};
 
 // src/use-cases/create-post-use-case.ts
-const CreatePostUseCase = class {
+var CreatePostUseCase = class {
   constructor(postRepository) {
-    this.postRepository = postRepository
+    this.postRepository = postRepository;
   }
-
   handler(post) {
     return __async(this, null, function* () {
-      return this.postRepository.createPost(post)
-    })
+      return this.postRepository.createPost(post);
+    });
   }
-}
+};
 
 // src/use-cases/factory/make-create-post-use-case.ts
 function makeCreatePostUseCase() {
-  const postRepository = new PostsRepository()
-  const createPostUseCase = new CreatePostUseCase(postRepository)
-  return createPostUseCase
+  const postRepository = new PostsRepository();
+  const createPostUseCase = new CreatePostUseCase(postRepository);
+  return createPostUseCase;
 }
 
 // src/controllers/teachers/posts/create-post.ts
-const import_zod6 = require('zod')
+var import_zod6 = require("zod");
 function createPost(req, res) {
   return __async(this, null, function* () {
     const registerBodySchema = import_zod6.z.object({
@@ -478,246 +456,233 @@ function createPost(req, res) {
       id_subject: import_zod6.z.coerce.number(),
       post_text: import_zod6.z.string(),
       post_title: import_zod6.z.string(),
-      post_date: import_zod6.z.coerce
-        .date()
-        .default(() => /* @__PURE__ */ new Date()),
-    })
-    const { id_teacher, id_subject, post_text, post_title, post_date } =
-      registerBodySchema.parse(req.body)
-    const createPostUseCase = makeCreatePostUseCase()
+      post_date: import_zod6.z.coerce.date().default(() => /* @__PURE__ */ new Date())
+    });
+    const { id_teacher, id_subject, post_text, post_title, post_date } = registerBodySchema.parse(req.body);
+    const createPostUseCase = makeCreatePostUseCase();
     const post = yield createPostUseCase.handler({
       id_teacher,
       id_subject,
       post_text,
       post_title,
-      post_date,
-    })
-    return res.status(201).send(post)
-  })
+      post_date
+    });
+    return res.status(201).send(post);
+  });
 }
 
 // src/use-cases/delete-post-use-case.ts
-const DeletePostUseCase = class {
+var DeletePostUseCase = class {
   constructor(postRepository) {
-    this.postRepository = postRepository
+    this.postRepository = postRepository;
   }
-
   handler(id_post) {
     return __async(this, null, function* () {
-      return yield this.postRepository.deletePost(id_post)
-    })
+      return yield this.postRepository.deletePost(id_post);
+    });
   }
-}
+};
 
 // src/use-cases/factory/make-delete-post-use-case.ts
 function makeDeletePostUseCase() {
-  const postRepository = new PostsRepository()
-  const deletePostUseCase = new DeletePostUseCase(postRepository)
-  return deletePostUseCase
+  const postRepository = new PostsRepository();
+  const deletePostUseCase = new DeletePostUseCase(postRepository);
+  return deletePostUseCase;
 }
 
 // src/controllers/teachers/posts/delete-post.ts
-const import_zod7 = require('zod')
+var import_zod7 = require("zod");
 function deletePost(req, res) {
   return __async(this, null, function* () {
     const registerParamsSchema = import_zod7.z.object({
-      id_post: import_zod7.z.coerce.number(),
-    })
-    const { id_post } = registerParamsSchema.parse(req.params)
-    const deletePostUseCase = makeDeletePostUseCase()
-    yield deletePostUseCase.handler(id_post)
-    return res.status(201)
-  })
+      id_post: import_zod7.z.coerce.number()
+    });
+    const { id_post } = registerParamsSchema.parse(req.params);
+    const deletePostUseCase = makeDeletePostUseCase();
+    yield deletePostUseCase.handler(id_post);
+    return res.status(201);
+  });
 }
 
 // src/use-cases/find-all-posts-use-case.ts
-const FindAllPostsUseCase = class {
+var FindAllPostsUseCase = class {
   constructor(postRepository) {
-    this.postRepository = postRepository
+    this.postRepository = postRepository;
   }
-
   handler(page, limit) {
     return __async(this, null, function* () {
-      return this.postRepository.findAllPosts(page, limit)
-    })
+      return this.postRepository.findAllPosts(page, limit);
+    });
   }
-}
+};
 
 // src/use-cases/factory/make-find-all-posts-use-case.ts
 function makeFindAllPostsUseCase() {
-  const postRepository = new PostsRepository()
-  const findAllPostsUseCase = new FindAllPostsUseCase(postRepository)
-  return findAllPostsUseCase
+  const postRepository = new PostsRepository();
+  const findAllPostsUseCase = new FindAllPostsUseCase(postRepository);
+  return findAllPostsUseCase;
 }
 
 // src/controllers/teachers/posts/find-all-posts.ts
-const import_zod8 = require('zod')
+var import_zod8 = require("zod");
 function findAllPosts(req, res) {
   return __async(this, null, function* () {
     const registerQuerySchema = import_zod8.z.object({
       page: import_zod8.z.coerce.number().default(1),
-      limit: import_zod8.z.coerce.number().default(5),
-    })
-    const { page, limit } = registerQuerySchema.parse(req.query)
-    const findAllPostsUseCase = makeFindAllPostsUseCase()
-    const posts = yield findAllPostsUseCase.handler(page, limit)
-    return res.status(200).send(posts)
-  })
+      limit: import_zod8.z.coerce.number().default(5)
+    });
+    const { page, limit } = registerQuerySchema.parse(req.query);
+    const findAllPostsUseCase = makeFindAllPostsUseCase();
+    const posts = yield findAllPostsUseCase.handler(page, limit);
+    return res.status(200).send(posts);
+  });
 }
 
 // src/use-cases/update-post-use-case.ts
-const UpdatePostUseCase = class {
+var UpdatePostUseCase = class {
   constructor(postRepository) {
-    this.postRepository = postRepository
+    this.postRepository = postRepository;
   }
-
   handler(post) {
     return __async(this, null, function* () {
-      return this.postRepository.updatePost(post)
-    })
+      return this.postRepository.updatePost(post);
+    });
   }
-}
+};
 
 // src/use-cases/factory/make-update-post-use-case.ts
 function makeUpdatePostUseCase() {
-  const postRepository = new PostsRepository()
-  const updatePostUseCase = new UpdatePostUseCase(postRepository)
-  return updatePostUseCase
+  const postRepository = new PostsRepository();
+  const updatePostUseCase = new UpdatePostUseCase(postRepository);
+  return updatePostUseCase;
 }
 
 // src/controllers/teachers/posts/update-post.ts
-const import_zod9 = require('zod')
+var import_zod9 = require("zod");
 function updatePost(req, res) {
   return __async(this, null, function* () {
     const registerParamsSchema = import_zod9.z.object({
-      id_post: import_zod9.z.coerce.number(),
-    })
+      id_post: import_zod9.z.coerce.number()
+    });
     const registerBodySchema = import_zod9.z.object({
       id_teacher: import_zod9.z.string(),
       id_subject: import_zod9.z.coerce.number(),
       post_text: import_zod9.z.string(),
       post_title: import_zod9.z.string(),
-      post_date: import_zod9.z.coerce
-        .date()
-        .default(() => /* @__PURE__ */ new Date()),
-    })
-    const { id_post } = registerParamsSchema.parse(req.params)
-    const { id_teacher, id_subject, post_text, post_title, post_date } =
-      registerBodySchema.parse(req.body)
-    const updatePostUseCase = makeUpdatePostUseCase()
+      post_date: import_zod9.z.coerce.date().default(() => /* @__PURE__ */ new Date())
+    });
+    const { id_post } = registerParamsSchema.parse(req.params);
+    const { id_teacher, id_subject, post_text, post_title, post_date } = registerBodySchema.parse(req.body);
+    const updatePostUseCase = makeUpdatePostUseCase();
     const post = yield updatePostUseCase.handler({
       id_post,
       id_teacher,
       id_subject,
       post_text,
       post_title,
-      post_date,
-    })
-    return res.status(201).send(post)
-  })
+      post_date
+    });
+    return res.status(201).send(post);
+  });
 }
 
 // src/routes/teacher-routes/teacher-routes.ts
-const teacherRouter = (0, import_express2.Router)()
-teacherRouter.post('/post', createPost)
-teacherRouter.delete('/post/:id_post', deletePost)
-teacherRouter.put('/post/:id_post', updatePost)
-teacherRouter.get('/posts', findAllPosts)
-const teacher_routes_default = teacherRouter
+var teacherRouter = (0, import_express2.Router)();
+teacherRouter.post("/post", createPost);
+teacherRouter.delete("/post/:id_post", deletePost);
+teacherRouter.put("/post/:id_post", updatePost);
+teacherRouter.get("/posts", findAllPosts);
+var teacher_routes_default = teacherRouter;
 
 // src/routes/students-routes/student-routes.ts
-const import_express3 = require('express')
+var import_express3 = require("express");
 
 // src/use-cases/find-post-by-id-use-case.ts
-const FindPostByIdUseCase = class {
+var FindPostByIdUseCase = class {
   constructor(postRepository) {
-    this.postRepository = postRepository
+    this.postRepository = postRepository;
   }
-
   handler(id_post) {
     return __async(this, null, function* () {
-      return this.postRepository.findPostById(id_post)
-    })
+      return this.postRepository.findPostById(id_post);
+    });
   }
-}
+};
 
 // src/use-cases/factory/make-find-post-by-id-use-case.ts
 function makeFindPostByIdUseCase() {
-  const postRepository = new PostsRepository()
-  const findPostByIdUseCase = new FindPostByIdUseCase(postRepository)
-  return findPostByIdUseCase
+  const postRepository = new PostsRepository();
+  const findPostByIdUseCase = new FindPostByIdUseCase(postRepository);
+  return findPostByIdUseCase;
 }
 
 // src/controllers/students/find-post-by-id.ts
-const import_zod10 = require('zod')
+var import_zod10 = require("zod");
 function FindPostById(req, res) {
   return __async(this, null, function* () {
     const registerParamsSchema = import_zod10.z.object({
-      id_post: import_zod10.z.coerce.number(),
-    })
-    const { id_post } = registerParamsSchema.parse(req.params)
-    const findPostByIdUseCase = makeFindPostByIdUseCase()
-    const post = yield findPostByIdUseCase.handler(id_post)
-    return res.status(200).send(post)
-  })
+      id_post: import_zod10.z.coerce.number()
+    });
+    const { id_post } = registerParamsSchema.parse(req.params);
+    const findPostByIdUseCase = makeFindPostByIdUseCase();
+    const post = yield findPostByIdUseCase.handler(id_post);
+    return res.status(200).send(post);
+  });
 }
 
 // src/use-cases/search-post-use-case.ts
-const SearchPostUseCase = class {
+var SearchPostUseCase = class {
   constructor(postsRepository) {
-    this.postsRepository = postsRepository
+    this.postsRepository = postsRepository;
   }
-
   handler(keyWord) {
     return __async(this, null, function* () {
-      return yield this.postsRepository.keyWordSearch(keyWord)
-    })
+      return yield this.postsRepository.keyWordSearch(keyWord);
+    });
   }
-}
+};
 
 // src/use-cases/factory/make-search-post-use-case.ts
 function makeSearchPostUseCase() {
-  return __async(this, null, function* () {
-    const postsRepository = new PostsRepository()
-    const makeSearchPostUseCase2 = new SearchPostUseCase(postsRepository)
-    return makeSearchPostUseCase2
-  })
+  const postsRepository = new PostsRepository();
+  const makeSearchPostUseCase2 = new SearchPostUseCase(postsRepository);
+  return makeSearchPostUseCase2;
 }
 
 // src/controllers/students/search-post-using-keyword.ts
-const import_zod11 = require('zod')
+var import_zod11 = require("zod");
 function KeywordSearchPost(req, res) {
   return __async(this, null, function* () {
     const registerQuerySchema = import_zod11.z.object({
-      keyWord: import_zod11.z.string(),
-    })
-    const { keyWord } = registerQuerySchema.parse(req.query)
-    const searchPostUseCase = makeSearchPostUseCase()
-    const posts = (yield searchPostUseCase).handler(keyWord)
-    return res.status(200).send(posts)
-  })
+      keyWord: import_zod11.z.string()
+    });
+    const { keyWord } = registerQuerySchema.parse(req.query);
+    const searchPostUseCase = makeSearchPostUseCase();
+    const posts = yield searchPostUseCase.handler(keyWord);
+    return res.status(200).send(posts);
+  });
 }
 
 // src/routes/students-routes/student-routes.ts
-const studentRoutes = (0, import_express3.Router)()
-studentRoutes.get('/posts', findAllPosts)
-studentRoutes.get('/posts/:id_post', FindPostById)
-studentRoutes.get('/posts/search', KeywordSearchPost)
-const student_routes_default = studentRoutes
+var studentRoutes = (0, import_express3.Router)();
+studentRoutes.get("/posts", findAllPosts);
+studentRoutes.get("/posts/:id_post", FindPostById);
+studentRoutes.get("/search", KeywordSearchPost);
+var student_routes_default = studentRoutes;
 
 // src/routes/index.ts
-const routes = (0, import_express4.Router)()
-routes.use('/adm', adm_routes_default)
-routes.use('/teacher', teacher_routes_default)
-routes.use('/student', student_routes_default)
-const routes_default = routes
+var routes = (0, import_express4.Router)();
+routes.use("/adm", adm_routes_default);
+routes.use("/teacher", teacher_routes_default);
+routes.use("/student", student_routes_default);
+var routes_default = routes;
 
 // src/app.ts
-const app = (0, import_express5.default)()
-app.use(import_express5.default.json())
-app.use(routes_default)
+var app = (0, import_express5.default)();
+app.use(import_express5.default.json());
+app.use(routes_default);
 
 // src/server.ts
 app.listen(env.PORT, () => {
-  console.log(`Server started on port ${env.PORT} `)
-})
+  console.log(`Server started on port ${env.PORT} `);
+});

@@ -196,11 +196,9 @@ var SearchPostUseCase = class {
 
 // src/use-cases/factory/make-search-post-use-case.ts
 function makeSearchPostUseCase() {
-  return __async(this, null, function* () {
-    const postsRepository = new PostsRepository();
-    const makeSearchPostUseCase2 = new SearchPostUseCase(postsRepository);
-    return makeSearchPostUseCase2;
-  });
+  const postsRepository = new PostsRepository();
+  const makeSearchPostUseCase2 = new SearchPostUseCase(postsRepository);
+  return makeSearchPostUseCase2;
 }
 
 // src/controllers/students/search-post-using-keyword.ts
@@ -212,7 +210,7 @@ function KeywordSearchPost(req, res) {
     });
     const { keyWord } = registerQuerySchema.parse(req.query);
     const searchPostUseCase = makeSearchPostUseCase();
-    const posts = (yield searchPostUseCase).handler(keyWord);
+    const posts = yield searchPostUseCase.handler(keyWord);
     return res.status(200).send(posts);
   });
 }

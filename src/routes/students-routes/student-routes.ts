@@ -7,6 +7,6 @@ const studentRoutes = Router()
 
 studentRoutes.get('/posts', findAllPosts)
 studentRoutes.get('/posts/:id_post', FindPostById)
-studentRoutes.get('/posts/search', KeywordSearchPost)
+studentRoutes.get('/search', KeywordSearchPost)
 
 export default studentRoutes
