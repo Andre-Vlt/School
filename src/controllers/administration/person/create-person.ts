@@ -1,7 +1,6 @@
 import express from 'express'
 import { makeCreatePersonUseCase } from 'src/use-cases/factory/make-create-person-use-case'
 import { z } from 'zod'
-
 export async function createPerson(
   req: express.Request,
   res: express.Response,
