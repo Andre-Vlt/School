@@ -669,6 +669,9 @@ var student_routes_default = studentRoutes;
 
 // src/routes/index.ts
 var routes = (0, import_express4.Router)();
+routes.get("/test", (req, res) => {
+  res.send("Hello World!");
+});
 routes.use("/adm", adm_routes_default);
 routes.use("/teacher", teacher_routes_default);
 routes.use("/student", student_routes_default);

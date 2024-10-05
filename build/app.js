@@ -682,15 +682,178 @@ var student_routes_default = studentRoutes;
 
 // src/routes/index.ts
 var routes = (0, import_express4.Router)();
+routes.get("/test", (req, res) => {
+  res.send("Hello World!");
+});
 routes.use("/adm", adm_routes_default);
 routes.use("/teacher", teacher_routes_default);
 routes.use("/student", student_routes_default);
 var routes_default = routes;
 
 // src/app.ts
+var import_swagger_ui_express = __toESM(require("swagger-ui-express"));
+
+// src/swagger-output.json
+var swagger_output_default = {
+  openapi: "3.0.0",
+  info: {
+    title: "API",
+    description: "API",
+    version: "1.0.0"
+  },
+  servers: [
+    {
+      url: "http://localhost:3000"
+    }
+  ],
+  paths: {
+    "/adm/user": {
+      post: {
+        description: "",
+        responses: {
+          "201": {
+            description: "Created"
+          }
+        }
+      }
+    },
+    "/adm/person": {
+      post: {
+        description: "",
+        responses: {
+          "201": {
+            description: "Created"
+          }
+        }
+      }
+    },
+    "/adm/teacher": {
+      post: {
+        description: "",
+        responses: {
+          "201": {
+            description: "Created"
+          }
+        }
+      }
+    },
+    "/adm/student": {
+      post: {
+        description: "",
+        responses: {
+          "201": {
+            description: "Created"
+          }
+        }
+      }
+    },
+    "/teacher/post": {
+      post: {
+        description: "",
+        responses: {
+          "201": {
+            description: "Created"
+          }
+        }
+      }
+    },
+    "/teacher/post/{id_post}": {
+      delete: {
+        description: "",
+        parameters: [
+          {
+            name: "id_post",
+            in: "path",
+            required: true,
+            schema: {
+              type: "string"
+            }
+          }
+        ],
+        responses: {
+          "201": {
+            description: "Created"
+          }
+        }
+      },
+      put: {
+        description: "",
+        parameters: [
+          {
+            name: "id_post",
+            in: "path",
+            required: true,
+            schema: {
+              type: "string"
+            }
+          }
+        ],
+        responses: {
+          "201": {
+            description: "Created"
+          }
+        }
+      }
+    },
+    "/teacher/posts": {
+      get: {
+        description: "",
+        responses: {
+          "200": {
+            description: "OK"
+          }
+        }
+      }
+    },
+    "/student/posts": {
+      get: {
+        description: "",
+        responses: {
+          "200": {
+            description: "OK"
+          }
+        }
+      }
+    },
+    "/student/posts/{id_post}": {
+      get: {
+        description: "",
+        parameters: [
+          {
+            name: "id_post",
+            in: "path",
+            required: true,
+            schema: {
+              type: "string"
+            }
+          }
+        ],
+        responses: {
+          "200": {
+            description: "OK"
+          }
+        }
+      }
+    },
+    "/student/search": {
+      get: {
+        description: "",
+        responses: {
+          "200": {
+            description: "OK"
+          }
+        }
+      }
+    }
+  }
+};
+
+// src/app.ts
 var app = (0, import_express5.default)();
 app.use(import_express5.default.json());
-app.use(routes_default);
+app.use("/api-docs", import_swagger_ui_express.default.serve, import_swagger_ui_express.default.setup(swagger_output_default));
+app.use("/", routes_default);
+console.log(swagger_output_default);
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
   app

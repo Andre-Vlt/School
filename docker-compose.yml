@@ -16,7 +16,9 @@ services:
       - app-network
 
   app:
-    image: school:1
+    build:
+      context: .
+      dockerfile: Dockerfile
     container_name: app-container
     depends_on:
       - db
