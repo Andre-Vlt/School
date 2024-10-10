@@ -10,7 +10,7 @@
 <p>
 <ol>
 <li><b>Clonar o repositório:</b><br>
-    - git clone https://github.com/SecondTechChallenge/School</li><br>
+    - git clone https://github.com/Andre-Vlt/School</li><br>
 <li><b>Instalar as dependências:</b><br>
     - npm install</li><br>
 <li><b>Configurar variáveis de ambiente em .env</b><br>
