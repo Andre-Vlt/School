@@ -1,8 +1,9 @@
 import 'dotenv/config'
 
 import { z } from 'zod'
+import { Env } from './env.interface'
 
-let env
+let env: Env
 if (process.env.NODE_ENV === 'development') {
   const envSchema = z.object({
     PORT: z.coerce.number().default(3000),
@@ -41,4 +42,4 @@ if (process.env.NODE_ENV === 'development') {
   env = _env.data
 }
 
-export default env
+export { env }
