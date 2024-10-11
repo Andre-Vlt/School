@@ -24,7 +24,7 @@ if (process.env.ENVIRONMENT === 'development') {
     throw new Error(`There's something wrong with the environment variables`)
   }
   env = _env.data
-} else if (process.env.NODE_ENV === 'production') {
+} else if (process.env.ENVIRONMENT === 'production') {
   const envSchema = z.object({
     PORT: z.coerce.number().default(3000),
     DATABASE_URL: z.string(),
