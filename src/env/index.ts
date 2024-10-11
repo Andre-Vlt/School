@@ -4,7 +4,7 @@ import { z } from 'zod'
 import { Env } from './env.interface'
 
 let env: Env
-if (process.env.NODE_ENV === 'development') {
+if (process.env.ENVIRONMENT === 'development') {
   const envSchema = z.object({
     PORT: z.coerce.number().default(3000),
     DATABASE_USER: z.string(),
