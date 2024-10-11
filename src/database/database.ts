@@ -1,12 +1,22 @@
 import { env } from 'src/env/index'
 import { Pool, PoolClient } from 'pg'
-
-const CONFIG = {
-  user: env.DATABASE_USER,
-  host: env.DATABASE_HOST,
-  database: env.DATABASE_NAME,
-  password: env.DATABASE_PASSWORD,
-  port: env.DATABASE_PORT,
+let CONFIG = {}
+if (process.env.ENVIRONMENT === 'development') {
+  CONFIG = {
+    user: env.DATABASE_USER,
+    host: env.DATABASE_HOST_DEV,
+    database: env.DATABASE_NAME,
+    password: env.DATABASE_PASSWORD,
+    port: env.DATABASE_PORT_DEV,
+  }
+} else if (process.env.ENVIRONMENT === 'production') {
+  CONFIG = {
+    user: env.DATABASE_USER,
+    host: env.DATABASE_HOST_PROD,
+    database: env.DATABASE_NAME,
+    password: env.DATABASE_PASSWORD,
+    port: env.DATABASE_PORT_PROD,
+  }
 }
 
 class Database {

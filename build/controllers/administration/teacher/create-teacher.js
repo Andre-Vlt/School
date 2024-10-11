@@ -61,6 +61,7 @@ var CreateTeacherUseCase = class {
 var import_config = require("dotenv/config");
 var import_zod = require("zod");
 var env;
+console.log(process.env.ENVIRONMENT);
 if (process.env.ENVIRONMENT === "development") {
   const envSchema = import_zod.z.object({
     PORT: import_zod.z.coerce.number().default(3e3),
@@ -79,7 +80,7 @@ if (process.env.ENVIRONMENT === "development") {
     throw new Error(`There's something wrong with the environment variables`);
   }
   env = _env.data;
-} else if (process.env.NODE_ENV === "production") {
+} else if (process.env.ENVIRONMENT === "production") {
   const envSchema = import_zod.z.object({
     PORT: import_zod.z.coerce.number().default(3e3),
     DATABASE_URL: import_zod.z.string()
