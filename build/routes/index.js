@@ -51,23 +51,40 @@ var import_express = require("express");
 // src/env/index.ts
 var import_config = require("dotenv/config");
 var import_zod = require("zod");
-var envSchema = import_zod.z.object({
-  PORT: import_zod.z.coerce.number().default(3e3),
-  DATABASE_USER: import_zod.z.string(),
-  DATABASE_NAME: import_zod.z.string(),
-  DATABASE_PASSWORD: import_zod.z.string(),
-  DATABASE_HOST: import_zod.z.string(),
-  DATABASE_PORT: import_zod.z.coerce.number()
-});
-var _env = envSchema.safeParse(process.env);
-if (!_env.success) {
-  console.error(
-    `There's something wrong with the environment variables`,
-    _env.error.format()
-  );
-  throw new Error(`There's something wrong with the environment variables`);
+var env;
+if (process.env.ENVIRONMENT === "development") {
+  const envSchema = import_zod.z.object({
+    PORT: import_zod.z.coerce.number().default(3e3),
+    DATABASE_USER: import_zod.z.string(),
+    DATABASE_NAME: import_zod.z.string(),
+    DATABASE_PASSWORD: import_zod.z.string(),
+    DATABASE_HOST: import_zod.z.string(),
+    DATABASE_PORT: import_zod.z.coerce.number()
+  });
+  const _env = envSchema.safeParse(process.env);
+  if (!_env.success) {
+    console.error(
+      `There's something wrong with the environment variables`,
+      _env.error.format()
+    );
+    throw new Error(`There's something wrong with the environment variables`);
+  }
+  env = _env.data;
+} else if (process.env.NODE_ENV === "production") {
+  const envSchema = import_zod.z.object({
+    PORT: import_zod.z.coerce.number().default(3e3),
+    DATABASE_URL: import_zod.z.string()
+  });
+  const _env = envSchema.safeParse(process.env);
+  if (!_env.success) {
+    console.error(
+      `There's something wrong with the environment variables`,
+      _env.error.format()
+    );
+    throw new Error(`There's something wrong with the environment variables`);
+  }
+  env = _env.data;
 }
-var env = _env.data;
 
 // src/database/database.ts
 var import_pg = require("pg");
@@ -669,9 +686,6 @@ var student_routes_default = studentRoutes;
 
 // src/routes/index.ts
 var routes = (0, import_express4.Router)();
-routes.get("/test", (req, res) => {
-  res.send("Hello World!");
-});
 routes.use("/adm", adm_routes_default);
 routes.use("/teacher", teacher_routes_default);
 routes.use("/student", student_routes_default);
