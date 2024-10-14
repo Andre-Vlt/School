@@ -11,16 +11,6 @@
     }
   ],
   "paths": {
-    "/test": {
-      "get": {
-        "description": "",
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
     "/adm/user": {
       "post": {
         "summary":"Create a new user",
