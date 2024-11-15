@@ -2,7 +2,10 @@ import express from 'express'
 import { makeGetPersonUseCase } from 'src/use-cases/factory/make-get-person-use-case'
 import { z } from 'zod'
 
-export async function getPerson(req: express.Request, res: express.Response) {
+export async function getPersonById(
+  req: express.Request,
+  res: express.Response,
+) {
   const registerParamsSchema = z.object({
     id: z.string(),
   })
