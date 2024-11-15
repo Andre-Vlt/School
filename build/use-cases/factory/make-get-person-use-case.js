@@ -37,12 +37,12 @@ var __async = (__this, __arguments, generator) => {
   });
 };
 
-// src/controllers/administration/person/create-person.ts
-var create_person_exports = {};
-__export(create_person_exports, {
-  createPerson: () => createPerson
+// src/use-cases/factory/make-get-person-use-case.ts
+var make_get_person_use_case_exports = {};
+__export(make_get_person_use_case_exports, {
+  makeGetPersonUseCase: () => makeGetPersonUseCase
 });
-module.exports = __toCommonJS(create_person_exports);
+module.exports = __toCommonJS(make_get_person_use_case_exports);
 
 // src/env/index.ts
 var import_config = require("dotenv/config");
@@ -160,51 +160,25 @@ var PersonRepository = class {
   }
 };
 
-// src/use-cases/create-person-use-case.ts
-var CreatePersonUseCase = class {
+// src/use-cases/get-person-use-case.ts
+var GetPersonUseCase = class {
   constructor(personRepository) {
     this.personRepository = personRepository;
   }
-  handler(person) {
+  handler(id) {
     return __async(this, null, function* () {
-      return this.personRepository.create(person);
+      return this.personRepository.getPersonById(id);
     });
   }
 };
 
-// src/use-cases/factory/make-create-person-use-case.ts
-function makeCreatePersonUseCase() {
+// src/use-cases/factory/make-get-person-use-case.ts
+function makeGetPersonUseCase() {
   const personRepository = new PersonRepository();
-  const createPersonUseCase = new CreatePersonUseCase(personRepository);
-  return createPersonUseCase;
-}
-
-// src/controllers/administration/person/create-person.ts
-var import_zod2 = require("zod");
-function createPerson(req, res) {
-  return __async(this, null, function* () {
-    const registerBodySchema = import_zod2.z.object({
-      id_user: import_zod2.z.string(),
-      name: import_zod2.z.string(),
-      email: import_zod2.z.string().email(),
-      birth: import_zod2.z.coerce.date(),
-      cpf: import_zod2.z.string().max(11)
-    });
-    const { id_user, name, email, birth, cpf } = registerBodySchema.parse(
-      req.body
-    );
-    const createPersonUseCase = makeCreatePersonUseCase();
-    const person = yield createPersonUseCase.handler({
-      id_user,
-      name,
-      email,
-      birth,
-      cpf
-    });
-    return res.status(201).send(person);
-  });
+  const getPersonUseCase = new GetPersonUseCase(personRepository);
+  return getPersonUseCase;
 }
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
-  createPerson
+  makeGetPersonUseCase
 });

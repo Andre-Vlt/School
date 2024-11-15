@@ -7,20 +7,15 @@ var info = {
 };
 var servers = [
   {
-    url: "http://localhost:3000"
+    url: "http://localhost:3000",
+    description: "Local server"
+  },
+  {
+    url: "https://school-bqfd.onrender.com",
+    description: "Production server"
   }
 ];
 var paths = {
-  "/test": {
-    get: {
-      description: "",
-      responses: {
-        "200": {
-          description: "OK"
-        }
-      }
-    }
-  },
   "/adm/user": {
     post: {
       summary: "Create a new user",

@@ -33,8 +33,8 @@ if (process.env.ENVIRONMENT === "development") {
     DATABASE_USER: import_zod.z.string(),
     DATABASE_NAME: import_zod.z.string(),
     DATABASE_PASSWORD: import_zod.z.string(),
-    DATABASE_HOST: import_zod.z.string(),
-    DATABASE_PORT: import_zod.z.coerce.number()
+    DATABASE_HOST_DEV: import_zod.z.string(),
+    DATABASE_PORT_DEV: import_zod.z.coerce.number()
   });
   const _env = envSchema.safeParse(process.env);
   if (!_env.success) {
@@ -47,8 +47,12 @@ if (process.env.ENVIRONMENT === "development") {
   env = _env.data;
 } else if (process.env.ENVIRONMENT === "production") {
   const envSchema = import_zod.z.object({
+    DATABASE_USER: import_zod.z.string(),
+    DATABASE_NAME: import_zod.z.string(),
+    DATABASE_PASSWORD: import_zod.z.string(),
     PORT: import_zod.z.coerce.number().default(3e3),
-    DATABASE_URL: import_zod.z.string()
+    DATABASE_HOST_PROD: import_zod.z.string(),
+    DATABASE_PORT_PROD: import_zod.z.coerce.number()
   });
   const _env = envSchema.safeParse(process.env);
   if (!_env.success) {

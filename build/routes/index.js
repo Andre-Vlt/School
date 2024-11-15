@@ -59,8 +59,8 @@ if (process.env.ENVIRONMENT === "development") {
     DATABASE_USER: import_zod.z.string(),
     DATABASE_NAME: import_zod.z.string(),
     DATABASE_PASSWORD: import_zod.z.string(),
-    DATABASE_HOST: import_zod.z.string(),
-    DATABASE_PORT: import_zod.z.coerce.number()
+    DATABASE_HOST_DEV: import_zod.z.string(),
+    DATABASE_PORT_DEV: import_zod.z.coerce.number()
   });
   const _env = envSchema.safeParse(process.env);
   if (!_env.success) {
@@ -73,8 +73,12 @@ if (process.env.ENVIRONMENT === "development") {
   env = _env.data;
 } else if (process.env.ENVIRONMENT === "production") {
   const envSchema = import_zod.z.object({
+    DATABASE_USER: import_zod.z.string(),
+    DATABASE_NAME: import_zod.z.string(),
+    DATABASE_PASSWORD: import_zod.z.string(),
     PORT: import_zod.z.coerce.number().default(3e3),
-    DATABASE_URL: import_zod.z.string()
+    DATABASE_HOST_PROD: import_zod.z.string(),
+    DATABASE_PORT_PROD: import_zod.z.coerce.number()
   });
   const _env = envSchema.safeParse(process.env);
   if (!_env.success) {
@@ -89,13 +93,24 @@ if (process.env.ENVIRONMENT === "development") {
 
 // src/database/database.ts
 var import_pg = require("pg");
-var CONFIG = {
-  user: env.DATABASE_USER,
-  host: env.DATABASE_HOST,
-  database: env.DATABASE_NAME,
-  password: env.DATABASE_PASSWORD,
-  port: env.DATABASE_PORT
-};
+var CONFIG = {};
+if (process.env.ENVIRONMENT === "development") {
+  CONFIG = {
+    user: env.DATABASE_USER,
+    host: env.DATABASE_HOST_DEV,
+    database: env.DATABASE_NAME,
+    password: env.DATABASE_PASSWORD,
+    port: env.DATABASE_PORT_DEV
+  };
+} else if (process.env.ENVIRONMENT === "production") {
+  CONFIG = {
+    user: env.DATABASE_USER,
+    host: env.DATABASE_HOST_PROD,
+    database: env.DATABASE_NAME,
+    password: env.DATABASE_PASSWORD,
+    port: env.DATABASE_PORT_PROD
+  };
+}
 var Database = class {
   constructor() {
     this.pool = new import_pg.Pool(CONFIG);
@@ -136,6 +151,14 @@ var PersonRepository = class {
         birth,
         cpf
       ]);
+      return result == null ? void 0 : result.rows[0];
+    });
+  }
+  getPersonById(id) {
+    return __async(this, null, function* () {
+      var _a;
+      const query = `SELECT * FROM person WHERE id = $1`;
+      const result = yield (_a = database.clientInstance) == null ? void 0 : _a.query(query, [id]);
       return result == null ? void 0 : result.rows[0];
     });
   }
@@ -183,6 +206,34 @@ function createPerson(req, res) {
       cpf
     });
     return res.status(201).send(person);
+  });
+}
+
+// src/use-cases/get-person-use-case.ts
+var GetPersonUseCase = class {
+  constructor(personRepository) {
+    this.personRepository = personRepository;
+  }
+  handler(id) {
+    return __async(this, null, function* () {
+      return this.personRepository.getPersonById(id);
+    });
+  }
+};
+
+// src/use-cases/factory/make-get-person-use-case.ts
+function makeGetPersonUseCase() {
+  const personRepository = new PersonRepository();
+  const getPersonUseCase = new GetPersonUseCase(personRepository);
+  return getPersonUseCase;
+}
+
+// src/controllers/administration/person/get-person.ts
+function getPerson(req, res) {
+  return __async(this, null, function* () {
+    const getPersonUseCase = makeGetPersonUseCase();
+    const person = yield getPersonUseCase.handler();
+    return res.status(200).send(person);
   });
 }
 
@@ -351,6 +402,7 @@ admRouter.post("/user", createUser);
 admRouter.post("/person", createPerson);
 admRouter.post("/teacher", createTeacher);
 admRouter.post("/student", createStudent);
+admRouter.get("/person", getPerson);
 var adm_routes_default = admRouter;
 
 // src/routes/teacher-routes/teacher-routes.ts
