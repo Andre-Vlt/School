@@ -11,6 +11,6 @@ admRouter.post('/user', createUser)
 admRouter.post('/person', createPerson)
 admRouter.post('/teacher', createTeacher)
 admRouter.post('/student', createStudent)
-admRouter.get('/person:id', getPersonById)
+admRouter.get('/person/:id', getPersonById)
 
 export default admRouter
