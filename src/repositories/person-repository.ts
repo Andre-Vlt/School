@@ -28,4 +28,11 @@ export class PersonRepository implements IPersonRepository {
 
     return result?.rows[0]
   }
+
+  async getPersonByUserId(id: string): Promise<IPerson | undefined> {
+    const query = `SELECT * FROM person WHERE id_user = $1`
+    const result = await database.clientInstance?.query(query, [id])
+
+    return result?.rows[0]
+  }
 }
