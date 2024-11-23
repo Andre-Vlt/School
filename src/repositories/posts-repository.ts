@@ -10,7 +10,22 @@ export class PostsRepository implements IPostRepository {
     const offset = (page - 1) * limit
 
     const queryResult = await database.clientInstance?.query(
-      `SELECT * FROM posts LIMIT $1 OFFSET $2`,
+      `
+      SELECT 
+        posts.id_post,
+        posts.post_title,
+        posts.post_text,
+        posts.post_date,
+        posts.teacher_name,
+        subjects.subject_name
+      FROM 
+        posts
+      JOIN 
+        subjects 
+      ON 
+        posts.id_subject = subjects.id_subject
+      LIMIT $1 OFFSET $2
+      `,
       [limit, offset],
     )
 
