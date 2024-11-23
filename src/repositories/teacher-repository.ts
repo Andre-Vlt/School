@@ -6,10 +6,11 @@ export class TeacherRepository implements ITeacherRepository {
   async create({
     id_person,
     id_subject,
+    teacher_name,
   }: ITeacher): Promise<ITeacher | undefined> {
     const queryResult = await database.clientInstance?.query(
-      `INSERT INTO teachers (id_person, id_subject) VALUES ($1, $2) RETURNING *`,
-      [id_person, id_subject],
+      `INSERT INTO teachers (id_person, id_subject, teacher_name) VALUES ($1, $2, $3) RETURNING *`,
+      [id_person, id_subject, teacher_name],
     )
 
     return queryResult?.rows[0]
