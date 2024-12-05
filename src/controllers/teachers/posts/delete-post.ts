@@ -7,11 +7,15 @@ export async function deletePost(req: express.Request, res: express.Response) {
     id_post: z.coerce.number(),
   })
 
-  const { id_post } = registerParamsSchema.parse(req.params)
+  try {
+    const { id_post } = registerParamsSchema.parse(req.params)
 
-  const deletePostUseCase = makeDeletePostUseCase()
+    const deletePostUseCase = makeDeletePostUseCase()
 
-  await deletePostUseCase.handler(id_post)
+    await deletePostUseCase.handler(id_post)
 
-  return res.status(201)
+    return res.status(201).json({ message: 'Post deleted successfully' })
+  } catch (error) {
+    return res.status(500).json({ error: 'An error ocurred' })
+  }
 }
