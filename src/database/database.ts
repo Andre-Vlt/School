@@ -11,7 +11,7 @@ if (process.env.ENVIRONMENT === 'development') {
   }
 } else if (process.env.ENVIRONMENT === 'production') {
   CONFIG = {
-    connectionString: `postgresql://db_school_owner:${env.DATABASE_PASSWORD}@${env.DATABASE_HOST_PROD}/${env.DATABASE_NAME}?sslmode=require`,
+    connectionString: `postgresql://${env.DATABASE_USER}:${env.DATABASE_PASSWORD}@${env.DATABASE_HOST_PROD}/${env.DATABASE_NAME}?sslmode=require`,
     ssl: {
       rejectUnauthorized: false,
     },
