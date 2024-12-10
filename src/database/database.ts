@@ -11,11 +11,10 @@ if (process.env.ENVIRONMENT === 'development') {
   }
 } else if (process.env.ENVIRONMENT === 'production') {
   CONFIG = {
-    user: env.DATABASE_USER,
-    host: env.DATABASE_HOST_PROD,
-    database: env.DATABASE_NAME,
-    password: env.DATABASE_PASSWORD,
-    port: env.DATABASE_PORT_PROD,
+    connectionString: `postgresql://db_school_owner:${env.DATABASE_PASSWORD}@${env.DATABASE_HOST_PROD}/${env.DATABASE_NAME}?sslmode=require`,
+    ssl: {
+      rejectUnauthorized: false,
+    },
   }
 }
 
