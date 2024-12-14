@@ -31,9 +31,9 @@ class Database {
     try {
       this.client = await this.pool.connect()
     } catch (error) {
-      console.error(`Database connection error: ${error}`)
+      console.error(`Erro de conexão com o banco de dados: ${error}`)
 
-      throw new Error(`Database connection error: ${error}`)
+      throw new Error(`Erro de conexão com o banco de dados: ${error}`)
     }
   }
 
