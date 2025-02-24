@@ -4,4 +4,5 @@ export interface ITeacherRepository {
   create(teacher: ITeacher): Promise<ITeacher | undefined>
   getTeacherById(id: string): Promise<ITeacher | undefined>
   getTeacherByPersonId(id: string): Promise<ITeacher | undefined>
+  getAllTeachers(): Promise<ITeacher[] | undefined>
 }
