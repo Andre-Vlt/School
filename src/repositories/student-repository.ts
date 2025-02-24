@@ -12,4 +12,11 @@ export class StudentRepository implements IStudentRepository {
 
     return queryResult?.rows[0]
   }
+
+  async getAllStudents(): Promise<IStudent[] | undefined> {
+    const query = `SELECT * FROM students`
+    const queryResult = await database.clientInstance?.query(query)
+
+    return queryResult?.rows
+  }
 }
