@@ -2,6 +2,13 @@ import { ITeacher } from 'src/entities/teacher.interface'
 import { ITeacherRepository } from 'src/repositories/interfaces/teacher-repository-interface'
 import { database } from 'src/database/database'
 
+
+export interface UpdateTeacher{
+  teacher_name: string;
+  id_subject: number;
+  id_teacher: string;
+}
+
 export class TeacherRepository implements ITeacherRepository {
   async create({
     id_person,
@@ -40,5 +47,14 @@ export class TeacherRepository implements ITeacherRepository {
     )
 
     return queryResult?.rows
+  }
+
+  async updateTeacher({ id_teacher, id_subject, teacher_name }: UpdateTeacher): Promise<UpdateTeacher | undefined>{
+    const queryResult = await database.clientInstance?.query(
+      `UPDATE teachers SET teacher_name = $1, id_subject = $2 WHERE id_teacher = $3 RETURNING *`,
+      [teacher_name, id_subject, id_teacher]
+    )
+
+    return queryResult?.rows[0]
   }
 }
