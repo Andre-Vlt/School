@@ -7,13 +7,13 @@ export async function getStudentByPersonId(
   res: express.Response,
 ) {
   const registerParamsSchema = z.object({
-    id: z.string(),
+    id_person: z.string(),
   })
 
-  const { id } = registerParamsSchema.parse(req.params)
+  const { id_person } = registerParamsSchema.parse(req.params)
 
   const getStudentByPersonIdUseCase = makeGetStudentByPersonIdUseCase()
-  const student = await getStudentByPersonIdUseCase.handler(id)
+  const student = await getStudentByPersonIdUseCase.handler(id_person)
   if (!student) {
     return res.status(404).json({ message: 'Student not found' })
   }
