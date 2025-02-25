@@ -47,4 +47,11 @@ export class StudentRepository implements IStudentRepository {
       throw error;
     }
   }
+
+  async getStudentByPersonId(id_person: string): Promise<IStudent | undefined> {
+    const query = `SELECT * FROM students_view WHERE id_person = $1`
+    const queryResult = await database.clientInstance?.query(query, [id_person])
+
+    return queryResult?.rows[0]
+  }
 }
